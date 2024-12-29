@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Altın Fiyatları Grafiği</title>
+    <script src="https://unpkg.com/lightweight-charts/dist/lightweight-charts.standalone.production.js"></script>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #F1F1F1;
+            margin: 0;
+            padding: 0;
+            color: #333;
+        }
+
+        header {
+            background-color: #ffd700;
+            padding: 20px;
+            text-align: center;
+            font-size: 2em;
+            color: white;
+        }
+
+        nav {
+            background-color: #FFFFFF;
+            padding: 10px;
+            text-align: center;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: #333;
+            padding: 10px 15px;
+            margin: 0 10px;
+            font-size: 1.2em;
+        }
+
+        nav a:hover {
+            background-color: #FF7F50;
+            border-radius: 5px;
+            color: white;
+        }
+
+        .chart-section {
+            width: 80%;
+            margin: 20px auto;
+            padding: 20px;
+            border-radius: 10px;
+            background: white;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        #chart {
+            height: 400px;
+        }
+
+        select, button {
+            margin: 10px;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #FF7F50;
+            font-size: 1em;
+            cursor: pointer;
+        }
+
+        button {
+            background-color: #FF7F50;
+            color: white;
+        }
+
+        button:hover {
+            background-color: #FF6347;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Altın Fiyatları Grafiği</h1>
+    </header>
+
+    <nav>
+        <a href="{% url 'weather_home' %}">Hava Durumu</a>
+        <a href="{% url 'petrol_chart' %}">Petrol</a>
+        <a href="{% url 'gold_chart' %}">Altın</a>
+        <a href="{% url 'silver_chart' %}">Gümüş</a>
+        <a href="{% url 'contact' %}">İletişim</a>
+    </nav>
+
+    <div class="chart-section">
+        <form method="get">
+            <select name="time_frame" id="time-frame">
+                <option value="1day" {% if time_frame == '1day' %}selected{% endif %}>1 Gün</option>
+                <option value="1week" {% if time_frame == '1week' %}selected{% endif %}>1 Hafta</option>
+                <option value="1month" {% if time_frame == '1month' %}selected{% endif %}>1 Ay</option>
+                <option value="1year" {% if time_frame == '1year' %}selected{% endif %}>1 Yıl</option>
+                <option value="5year" {% if time_frame == '5year' %}selected{% endif %}>5 Yıl</option>
+                <option value="1day_forecast" {% if time_frame == '1day_forecast' %}selected{% endif %}>1 Günlük Tahmin</option>
+                <option value="1week_forecast" {% if time_frame == '1week_forecast' %}selected{% endif %}>1 Haftalık Tahmin</option>
+                <option value="1month_forecast" {% if time_frame == '1month_forecast' %}selected{% endif %}>1 Aylık Tahmin</option>
+            </select>
+            <button type="submit">Güncelle</button>
+        </form>
+        <div id="chart"></div>
+    </div>
+
+<script>
+    const chartData = {{ chart_data|safe }};
+
+    function drawChart(data) {
+        const chartContainer = document.getElementById('chart');
+        chartContainer.innerHTML = '';
+
+        const chart = LightweightCharts.createChart(chartContainer, {
+            width: 800,
+            height: 400,
+            layout: {
+                backgroundColor: '#FFFFFF',
+                textColor: '#333',
+            },
+            grid: {
+                vertLines: { color: '#E9E9E9' },
+                horzLines: { color: '#E9E9E9' },
+            },
+            priceScale: { borderColor: '#CCCCCC' },
+            timeScale: { borderColor: '#CCCCCC' },
+        });
+
+        const lineSeries = chart.addLineSeries({
+            color: '#FF7F50',
+            lineWidth: 2,
+        });
+
+        lineSeries.setData(
+            data.map(item => ({ time: item.time, value: item.value }))
+        );
+    }
+
+    console.log("Chart Data:", chartData);
+    drawChart(chartData);
+</script>
+</body>
+</html>

@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hava Durumu</title>
+    <style>
+        /* Genel stil */
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #F1F1F1;
+            margin: 0;
+            padding: 0;
+            color: #333;
+        }
+
+        /* Başlık ve üst menü */
+        header {
+            background-color: #A8DADC;
+            padding: 10px 20px;
+            text-align: center;
+            font-size: 1.5em;
+            color: white;
+            border-bottom: 3px solid #B8E0D2;
+        }
+
+        header h1 {
+            margin: 0;
+        }
+
+        /* Menü */
+        nav {
+            background-color: #FFFFFF;
+            padding: 10px;
+            text-align: center;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: #333;
+            padding: 10px 15px;
+            margin: 0 10px;
+            font-size: 1.2em;
+        }
+
+        nav a:hover {
+            background-color: #B8E0D2;
+            border-radius: 5px;
+        }
+
+        /* Hava durumu bölümü */
+        .weather-section {
+            background-color: white;
+            width: 80%;
+            margin: 20px auto;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .weather-icon {
+            width: 50px;
+            height: 50px;
+            margin: 10px 0;
+        }
+
+        .temp {
+            font-size: 2em;
+            color: #FF9B8D;
+        }
+
+        .city-selector {
+            margin-top: 20px;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #B8E0D2;
+            background-color: #FFFFFF;
+            color: #333;
+            font-size: 1.1em;
+        }
+
+        /* Footer */
+        footer {
+            background-color: #A8DADC;
+            padding: 10px;
+            text-align: center;
+            color: white;
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header ve Menüler -->
+    <header>
+        <h1>Hava Durumu</h1>
+    </header>
+
+<nav>
+    <a href="{% url 'weather_home' %}">Hava Durumu</a>
+    <a href="{% url 'petrol_chart' %}">Petrol</a>
+    <a href="{% url 'gold_chart' %}">Altın</a>
+    <a href="{% url 'silver_chart' %}">Gümüş</a>
+    <a href="{% url 'contact' %}">İletişim</a> <!-- İletişim bağlantısı eklendi -->
+    </nav>
+
+    <!-- Hava Durumu Bölümü -->
+    <div class="weather-section">
+        <img id="weather-icon" class="weather-icon" src="" alt="Hava Durumu">
+        <h2 id="city-name">Şehir Seçin</h2>
+        <p class="temp" id="temperature"></p>
+        <select class="city-selector" id="city" onchange="getWeather()">
+            <!-- Şehirler alfabetik sırayla eklendi -->
+            <option value="adana">Adana</option>
+            <option value="adiyaman">Adıyaman</option>
+            <option value="afyonkarahisar">Afyonkarahisar</option>
+            <option value="agri">Ağrı</option>
+            <option value="amasya">Amasya</option>
+            <option value="ankara">Ankara</option>
+            <option value="antalya">Antalya</option>
+            <option value="artvin">Artvin</option>
+            <option value="aydin">Aydın</option>
+            <option value="balikesir">Balıkesir</option>
+            <option value="bartin">Bartın</option>
+            <option value="batman">Batman</option>
+            <option value="bayburt">Bayburt</option>
+            <option value="bilecik">Bilecik</option>
+            <option value="bingol">Bingöl</option>
+            <option value="bitlis">Bitlis</option>
+            <option value="bolu">Bolu</option>
+            <option value="bursa">Bursa</option>
+            <option value="canakkale">Çanakkale</option>
+            <option value="cankiri">Çankırı</option>
+            <option value="corum">Çorum</option>
+            <option value="denizli">Denizli</option>
+            <option value="diyarbakir">Diyarbakır</option>
+            <option value="düzce">Düzce</option>
+            <option value="edirne">Edirne</option>
+            <option value="elazig">Elazığ</option>
+            <option value="erzincan">Erzincan</option>
+            <option value="erzurum">Erzurum</option>
+            <option value="eskisehir">Eskişehir</option>
+            <option value="gaziantep">Gaziantep</option>
+            <option value="giresun">Giresun</option>
+            <option value="gokceada">Gökçeada</option>
+            <option value="hakkari">Hakkari</option>
+            <option value="hatay">Hatay</option>
+            <option value="izmir">İzmir</option>
+            <option value="istanbul">İstanbul</option>
+            <option value="izmit">İzmit</option>
+            <option value="kahramanmaras">Kahramanmaraş</option>
+            <option value="karabük">Karabük</option>
+            <option value="karaman">Karaman</option>
+            <option value="kastamonu">Kastamonu</option>
+            <option value="kayseri">Kayseri</option>
+            <option value="kirikkale">Kırıkkale</option>
+            <option value="kirsehir">Kırşehir</option>
+            <option value="kocaeli">Kocaeli</option>
+            <option value="konya">Konya</option>
+            <option value="kutahya">Kütahya</option>
+            <option value="malatya">Malatya</option>
+            <option value="manisa">Manisa</option>
+            <option value="mardin">Mardin</option>
+            <option value="mugla">Muğla</option>
+            <option value="mus">Muş</option>
+            <option value="nevsehir">Nevşehir</option>
+            <option value="nigde">Niğde</option>
+            <option value="ordu">Ordu</option>
+            <option value="osmaniye">Osmaniye</option>
+            <option value="rize">Rize</option>
+            <option value="sakarya">Sakarya</option>
+            <option value="samsun">Samsun</option>
+            <option value="sanliurfa">Şanlıurfa</option>
+            <option value="siirt">Siirt</option>
+            <option value="sinop">Sinop</option>
+            <option value="sivas">Sivas</option>
+            <option value="tekirdag">Tekirdağ</option>
+            <option value="tokat">Tokat</option>
+            <option value="trabzon">Trabzon</option>
+            <option value="tunceli">Tunceli</option>
+            <option value="usak">Uşak</option>
+            <option value="van">Van</option>
+            <option value="yalova">Yalova</option>
+            <option value="yozgat">Yozgat</option>
+            <option value="zonguldak">Zonguldak</option>
+        </select>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2024 Kepa. Tüm hakları saklıdır.</p>
+    </footer>
+
+    <script>
+        const apiKey = "8a0dbb8511cc188e62055ba49f7c5ba8"; // OpenWeatherMap API anahtarınız
+
+        function getWeather() {
+            const city = document.getElementById("city").value;
+            const apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric&lang=tr`;
+
+            fetch(apiUrl)
+                .then(response => response.json())
+                .then(data => {
+                    const iconCode = data.weather[0].icon;
+                    const temp = data.main.temp;
+                    const description = data.weather[0].description;
+                    const cityName = data.name;
+
+                    // Hava durumu bilgilerini HTML'ye yazdır
+                    document.getElementById("city-name").textContent = cityName;
+                    document.getElementById("temperature").textContent = `${temp}°C`;
+                    document.getElementById("weather-icon").src = `http://openweathermap.org/img/wn/${iconCode}.png`;
+                    document.getElementById("weather-icon").alt = description;
+                })
+                .catch(error => {
+                    console.error("Hava durumu alınırken bir hata oluştu:", error);
+                    alert("Hava durumu alınırken bir hata oluştu.");
+                });
+        }
+    </script>
+</body>
+</html>

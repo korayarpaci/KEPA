@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>İletişim</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #F1F1F1;
+            margin: 0;
+            padding: 0;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        header {
+            background: -webkit-linear-gradient(90deg, #374471, #307c9d, #5eb2b5);
+            background: linear-gradient(90deg, #374471, #307c9d, #5eb2b5);
+            width: 100%;
+            padding: 30px 0; /* Boyutu artırıldı */
+            text-align: center;
+            font-size: 2.5em; /* Başlık boyutu artırıldı */
+            color: white;
+            font-weight: bold;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        nav {
+            background-color: #FFFFFF;
+            width: 100%;
+            padding: 15px 0;
+            text-align: center;
+            box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        nav a {
+            text-decoration: none;
+            color: #333;
+            padding: 15px 25px; /* Boyut artırıldı */
+            margin: 0 15px;
+            font-size: 1.5em; /* Font boyutu artırıldı */
+            font-weight: bold;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        nav a:hover {
+            background-color: #FF7F50;
+            color: white;
+        }
+
+        .form-container {
+            width: 60%; /* Genişlik artırıldı */
+            margin: 40px auto;
+            padding: 30px;
+            border-radius: 15px; /* Kenar yumuşatma artırıldı */
+            background: white;
+            box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.15); /* Daha belirgin gölge eklendi */
+            text-align: center; /* Form içeriği ortalandı */
+        }
+
+        .form-container h2 {
+            margin-bottom: 30px;
+            color: #307c9d;
+            font-size: 2em; /* Başlık boyutu artırıldı */
+            text-align: center;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center; /* Form alanları ortalandı */
+        }
+
+        label {
+            margin: 10px 0 5px;
+            font-weight: bold;
+            font-size: 1.2em; /* Etiket boyutu artırıldı */
+        }
+
+        input, textarea, button {
+            width: 90%; /* Genişlik artırıldı */
+            max-width: 600px; /* Maksimum genişlik sınırı eklendi */
+            padding: 15px; /* Dolgu artırıldı */
+            margin-bottom: 20px;
+            border: 1px solid #ced4da;
+            border-radius: 8px;
+            font-size: 1.2em; /* Font boyutu artırıldı */
+        }
+
+        button {
+            background-color: #FF7F50;
+            color: white;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #FF6347;
+        }
+
+        .success-message {
+            background-color: #d4edda;
+            color: #155724;
+            padding: 15px;
+            border: 1px solid #c3e6cb;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            font-size: 1.5em; /* Font boyutu artırıldı */
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <header>İletişim</header>
+
+    <nav>
+        <a href="{% url 'weather_home' %}">Hava Durumu</a>
+        <a href="{% url 'petrol_chart' %}">Petrol</a>
+        <a href="{% url 'gold_chart' %}">Altın</a>
+        <a href="{% url 'silver_chart' %}">Gümüş</a>
+        <a href="{% url 'contact' %}">İletişim</a>
+    </nav>
+
+    <div class="form-container">
+        {% if success %}
+        <div class="success-message">
+            Mesajınız başarıyla gönderildi! En kısa sürede sizinle iletişime geçeceğiz.
+        </div>
+        {% endif %}
+
+        <h2>Bize Ulaşın</h2>
+        <form method="POST">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Gönder</button>
+        </form>
+    </div>
+</body>
+</html>
